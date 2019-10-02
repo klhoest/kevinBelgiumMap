@@ -1,18 +1,23 @@
 import com.google.gson.Gson
-import java.io.FileReader
-import java.io.File
-import java.io.Reader
+
+const val PROVINCE_FILE_NAME = "belgium/admin_level_6.geojson"
+const val REGION_FILE_NAME = "belgium/admin_level_4.geojson"
 
 val gson = Gson()
 
 fun main(args: Array<String>) {
-    val inputProvince : File? = File("belgium/admin_level_6.geojson")
-    val reader : Reader? = FileReader(inputProvince)
-    if (reader == null) {
-        println("could not open inputProvince file")
+    val jsonDeserializer = JsonDeserializer<FullGeoModel>(gson)
+    val fullGeoModel = jsonDeserializer.extractPojo(PROVINCE_FILE_NAME, FullGeoModel::class.java)
+    if (fullGeoModel == null) {
+        println("could not open $PROVINCE_FILE_NAME")
         return
     }
-    val fullGeoModel = gson.fromJson(reader, FullGeoModel::class.java)
     print(fullGeoModel.type)
 
+    val regions = jsonDeserializer.extractPojo(REGION_FILE_NAME, FullGeoModel::class.java)
+    if (regions == null) {
+        println("could not open $REGION_FILE_NAME")
+        return
+    }
+    print(regions.features?.first())
 }
