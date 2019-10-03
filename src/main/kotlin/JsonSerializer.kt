@@ -1,10 +1,7 @@
 import com.google.gson.Gson
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileReader
-import java.io.IOException
+import java.io.* //auto import decided to merge the 5 java.io dependencies
 
-class JsonDeserializer<T>(private val gson: Gson) {
+class JsonSerializer<T>(private val gson: Gson) {
 
     /**
      * @return a pojo of generic type
@@ -34,5 +31,12 @@ class JsonDeserializer<T>(private val gson: Gson) {
             fileReader?.close()
         }
         return null
+    }
+
+    fun writeJson(name: String, model: T?) {
+        val outputJson: String = gson.toJson(model)
+        val writer = BufferedWriter(FileWriter(OUTPUT_FILE_NAME))
+        writer.write(outputJson)
+        writer.close()
     }
 }

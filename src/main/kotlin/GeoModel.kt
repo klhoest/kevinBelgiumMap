@@ -30,7 +30,7 @@ data class Feature(
     @SerializedName("osm_type") var osmType: String?, //relation
     @SerializedName("type") var type: String, //Feature
     @SerializedName("name") var name: String?, //Namur
-    @SerializedName("properties") var properties: Properties,
+    @SerializedName("properties") var properties: Any, //no schema for properties
     @SerializedName("geometry") var geometry: Geometry
 )
 
@@ -39,6 +39,7 @@ data class Geometry(
     @SerializedName("coordinates") var coordinates: List<List<List<List<Double?>?>?>?>?
 )
 
+//not used, Properties have no schema
 data class Properties(
     @SerializedName("name") var name: String?, //Namur
     @SerializedName("name:ca") var nameca: String?, //Província de Namur

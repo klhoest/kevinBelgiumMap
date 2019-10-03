@@ -1,20 +1,22 @@
 import com.google.gson.Gson
+import java.io.IOException
 
 const val PROVINCE_FILE_NAME = "belgium/admin_level_6.geojson"
 const val REGION_FILE_NAME = "belgium/admin_level_4.geojson"
+const val OUTPUT_FILE_NAME = "belgium/output.geojson"
 const val BRUSSELS_REGION_ID = 54094
 
 val gson = Gson()
 
 fun main(args: Array<String>) {
-    val jsonDeserializer = JsonDeserializer<FullGeoModel>(gson)
-    val fullGeoModel = jsonDeserializer.extractPojo(PROVINCE_FILE_NAME, FullGeoModel::class.java)
+    val jsonSerializer = JsonSerializer<FullGeoModel>(gson)
+    val fullGeoModel = jsonSerializer.extractPojo(PROVINCE_FILE_NAME, FullGeoModel::class.java)
     if (fullGeoModel == null) {
         println("could not open $PROVINCE_FILE_NAME")
         return
     }
 
-    val regions = jsonDeserializer.extractPojo(REGION_FILE_NAME, FullGeoModel::class.java)
+    val regions = jsonSerializer.extractPojo(REGION_FILE_NAME, FullGeoModel::class.java)
     if (regions == null) {
         println("could not open $REGION_FILE_NAME")
         return
@@ -26,5 +28,10 @@ fun main(args: Array<String>) {
     }
 
     fullGeoModel.features += brusselsRegion
-    val outputJson: String = gson.toJson(fullGeoModel)
+
+    try {
+        jsonSerializer.writeJson(OUTPUT_FILE_NAME, fullGeoModel)
+    } catch (ex : IOException) {
+        println("could not save result inside of $OUTPUT_FILE_NAME")
+    }
 }
