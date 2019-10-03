@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName
 data class FullGeoModel(
     @SerializedName("type") var type: String?, //FeatureCollection
     @SerializedName("geocoding") var geocoding: Geocoding?,
-    @SerializedName("features") var features: List<Feature?>?
+    @SerializedName("features") var features: List<Feature>
 )
 
 data class Geocoding(
@@ -22,13 +22,16 @@ data class Author(
     @SerializedName("name") var name: String? //Mapzen
 )
 
+/**
+ * see https://tools.ietf.org/html/rfc7946#section-3.2 for null safety
+ */
 data class Feature(
-    @SerializedName("id") var id: Int?, //1311816
+    @SerializedName("id") var id: Int, //1311816
     @SerializedName("osm_type") var osmType: String?, //relation
-    @SerializedName("type") var type: String?, //Feature
+    @SerializedName("type") var type: String, //Feature
     @SerializedName("name") var name: String?, //Namur
-    @SerializedName("properties") var properties: Properties?,
-    @SerializedName("geometry") var geometry: Geometry?
+    @SerializedName("properties") var properties: Properties,
+    @SerializedName("geometry") var geometry: Geometry
 )
 
 data class Geometry(
